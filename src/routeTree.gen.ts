@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BolsasRouteImport } from './routes/bolsas'
+import { Route as MentoriasRouteImport } from './routes/mentorias'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BolsasRoute = BolsasRouteImport.update({
+  id: '/bolsas',
+  path: '/bolsas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MentoriasRoute = MentoriasRouteImport.update({
+  id: '/mentorias',
+  path: '/mentorias',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/bolsas': typeof BolsasRoute
+  '/mentorias': typeof MentoriasRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/bolsas': typeof BolsasRoute
+  '/mentorias': typeof MentoriasRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/bolsas': typeof BolsasRoute
+  '/mentorias': typeof MentoriasRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/bolsas' | '/mentorias'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/bolsas' | '/mentorias'
+  id: '__root__' | '/' | '/bolsas' | '/mentorias'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BolsasRoute: typeof BolsasRoute
+  MentoriasRoute: typeof MentoriasRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bolsas': {
+      id: '/bolsas'
+      path: '/bolsas'
+      fullPath: '/bolsas'
+      preLoaderRoute: typeof BolsasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mentorias': {
+      id: '/mentorias'
+      path: '/mentorias'
+      fullPath: '/mentorias'
+      preLoaderRoute: typeof MentoriasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BolsasRoute: BolsasRoute,
+  MentoriasRoute: MentoriasRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
