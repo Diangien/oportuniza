@@ -14,16 +14,233 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      applications: {
+        Row: {
+          created_at: string
+          id: string
+          notes: string | null
+          scholarship_id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          scholarship_id: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          scholarship_id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "applications_scholarship_id_fkey"
+            columns: ["scholarship_id"]
+            isOneToOne: false
+            referencedRelation: "scholarships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bookings: {
+        Row: {
+          amount_kz: number
+          created_at: string
+          id: string
+          mentorship_id: string
+          message: string | null
+          payment_method: string
+          payment_reference: string | null
+          proof_path: string | null
+          scholarship_id: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          amount_kz: number
+          created_at?: string
+          id?: string
+          mentorship_id: string
+          message?: string | null
+          payment_method: string
+          payment_reference?: string | null
+          proof_path?: string | null
+          scholarship_id?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          amount_kz?: number
+          created_at?: string
+          id?: string
+          mentorship_id?: string
+          message?: string | null
+          payment_method?: string
+          payment_reference?: string | null
+          proof_path?: string | null
+          scholarship_id?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_mentorship_id_fkey"
+            columns: ["mentorship_id"]
+            isOneToOne: false
+            referencedRelation: "mentorships"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_scholarship_id_fkey"
+            columns: ["scholarship_id"]
+            isOneToOne: false
+            referencedRelation: "scholarships"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      mentorships: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string
+          duration: string
+          id: string
+          price_kz: number
+          title: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string
+          duration?: string
+          id?: string
+          price_kz: number
+          title: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string
+          duration?: string
+          id?: string
+          price_kz?: number
+          title?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          phone: string | null
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id: string
+          phone?: string | null
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+        }
+        Relationships: []
+      }
+      scholarships: {
+        Row: {
+          benefits: string
+          country: string
+          created_at: string
+          deadline: string | null
+          description: string
+          field: string | null
+          id: string
+          level: string
+          link: string | null
+          provider: string
+          published: boolean
+          requirements: string
+          scope: string
+          title: string
+        }
+        Insert: {
+          benefits?: string
+          country: string
+          created_at?: string
+          deadline?: string | null
+          description?: string
+          field?: string | null
+          id?: string
+          level?: string
+          link?: string | null
+          provider: string
+          published?: boolean
+          requirements?: string
+          scope: string
+          title: string
+        }
+        Update: {
+          benefits?: string
+          country?: string
+          created_at?: string
+          deadline?: string | null
+          description?: string
+          field?: string | null
+          id?: string
+          level?: string
+          link?: string | null
+          provider?: string
+          published?: boolean
+          requirements?: string
+          scope?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +367,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
