@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as BolsasRouteImport } from './routes/bolsas'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as MentoriasRouteImport } from './routes/mentorias'
+import { Route as RegistoRouteImport } from './routes/registo'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,18 +35,25 @@ const MentoriasRoute = MentoriasRouteImport.update({
   path: '/mentorias',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RegistoRoute = RegistoRouteImport.update({
+  id: '/registo',
+  path: '/registo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/bolsas': typeof BolsasRoute
   '/login': typeof LoginRoute
   '/mentorias': typeof MentoriasRoute
+  '/registo': typeof RegistoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/bolsas': typeof BolsasRoute
   '/login': typeof LoginRoute
   '/mentorias': typeof MentoriasRoute
+  '/registo': typeof RegistoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,14 @@ export interface FileRoutesById {
   '/bolsas': typeof BolsasRoute
   '/login': typeof LoginRoute
   '/mentorias': typeof MentoriasRoute
+  '/registo': typeof RegistoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/bolsas' | '/login' | '/mentorias'
+  fullPaths: '/' | '/bolsas' | '/login' | '/mentorias' | '/registo'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/bolsas' | '/login' | '/mentorias'
-  id: '__root__' | '/' | '/bolsas' | '/login' | '/mentorias'
+  to: '/' | '/bolsas' | '/login' | '/mentorias' | '/registo'
+  id: '__root__' | '/' | '/bolsas' | '/login' | '/mentorias' | '/registo'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +76,7 @@ export interface RootRouteChildren {
   BolsasRoute: typeof BolsasRoute
   LoginRoute: typeof LoginRoute
   MentoriasRoute: typeof MentoriasRoute
+  RegistoRoute: typeof RegistoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,6 +109,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MentoriasRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/registo': {
+      id: '/registo'
+      path: '/registo'
+      fullPath: '/registo'
+      preLoaderRoute: typeof RegistoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,6 +124,7 @@ const rootRouteChildren: RootRouteChildren = {
   BolsasRoute: BolsasRoute,
   LoginRoute: LoginRoute,
   MentoriasRoute: MentoriasRoute,
+  RegistoRoute: RegistoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
