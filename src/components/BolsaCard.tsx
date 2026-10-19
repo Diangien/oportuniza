@@ -13,7 +13,7 @@ export function BolsaCard({ b }: { b: Bolsa }) {
       <p className="text-sm text-muted-foreground">{b.entidade} · {b.nivel}</p>
       <p className="mt-3 flex-1 text-sm">{b.resumo}</p>
       <div className="mt-5 flex gap-2">
-        <button className="rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">Candidatar</button>
+        <button className="rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">Ver detalhes</button>
         <button className="rounded-full border border-border px-4 py-2 text-sm">Pedir mentoria</button>
       </div>
     </article>
