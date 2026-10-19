@@ -1,14 +1,18 @@
-# Welcome to your Lovable project
+# Angola Scholar Bridge
+
+Precisamos de um sistema que publique bolsas de  estudo e permite oferecer mentorias pagas a quem se candidatar". Precisa ser um sistema web. O sistema permite que os angolanos vejam bolsas de estudos internas e externas
 
 This project was built with [Lovable](https://lovable.dev).
 
+**Live app**: https://angola-scholar-bridge.lovable.app
+
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/7f475d77-b3d0-46a9-abc0-9042151b37e5).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +24,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
