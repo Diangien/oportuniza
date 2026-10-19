@@ -39,7 +39,7 @@ function Login() {
         </form>
         <div className="mt-6 flex items-center justify-between gap-3 text-sm">
           <span className="text-muted-foreground">Ainda não tem conta?</span>
-          <button type="button" className="rounded-full border border-border px-4 py-2 font-medium">Criar conta</button>
+          <Link to="/registo" className="rounded-full border border-border px-4 py-2 font-medium">Criar conta</Link>
         </div>
         <p className="mt-10 text-sm text-muted-foreground">
           Só quer espreitar? <Link to="/bolsas" className="text-primary hover:underline">Consulte as bolsas sem entrar</Link>.
