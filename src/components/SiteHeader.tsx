@@ -11,7 +11,7 @@ export function SiteHeader() {
         <nav className="flex items-center gap-4 sm:gap-6">
           <Link to="/bolsas" className={link} activeProps={{ className: "text-foreground" }}>Bolsas</Link>
           <Link to="/mentorias" className={link} activeProps={{ className: "text-foreground" }}>Mentorias</Link>
-          <span className="rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">Entrar</span>
+          <Link to="/login" className="rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">Entrar</Link>
         </nav>
       </div>
     </header>
