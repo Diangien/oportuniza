@@ -1,26 +1,29 @@
 # Angola Scholar Bridge
 
-Precisamos de um sistema que publique bolsas de  estudo e permite oferecer mentorias pagas a quem se candidatar". Precisa ser um sistema web. O sistema permite que os angolanos vejam bolsas de estudos internas e externas
+Sistema web que publica bolsas de estudo internas e externas para angolanos e oferece mentorias pagas a quem se candidatar.
 
-This project was built with [Lovable](https://lovable.dev).
+## Tecnologias
 
-**Live app**: https://angola-scholar-bridge.lovable.app
+- [TanStack Start](https://tanstack.com/start) (React 19 + TanStack Router, routing por ficheiros em `src/routes/`)
+- [Tailwind CSS 4](https://tailwindcss.com) e componentes [shadcn/ui](https://ui.shadcn.com) em `src/components/ui/`
+- [Vitest](https://vitest.dev) para testes
 
-## Build with Lovable
+## Desenvolvimento
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/7f475d77-b3d0-46a9-abc0-9042151b37e5).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+Requer Node.js e npm.
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+npm install
 npm run dev
 ```
+
+## Scripts
+
+| Comando           | Descrição                         |
+| ----------------- | --------------------------------- |
+| `npm run dev`     | Servidor de desenvolvimento       |
+| `npm run build`   | Build de produção (em `.output/`) |
+| `npm run preview` | Pré-visualizar o build            |
+| `npm run test`    | Correr os testes                  |
+| `npm run lint`    | Verificar o código com ESLint     |
+| `npm run format`  | Formatar o código com Prettier    |
