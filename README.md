@@ -26,4 +26,3 @@ npm run dev
 | `npm run preview` | Pré-visualizar o build            |
 | `npm run test`    | Correr os testes                  |
 | `npm run lint`    | Verificar o código com ESLint     |
-| `npm run format`  | Formatar o código com Prettier    |
