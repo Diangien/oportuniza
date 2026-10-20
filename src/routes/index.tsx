@@ -21,7 +21,7 @@ function Index() {
     <div className="min-h-screen">
       <SiteHeader />
       <section className="mx-auto max-w-6xl px-5 py-14 md:py-20">
-        <div className="grid items-center gap-10 md:grid-cols-[minmax(0,1fr)_340px] md:gap-12 lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-14">
+        <div className="grid items-center gap-10 md:grid-cols-[minmax(0,1fr)_340px] md:gap-12 lg:grid-cols-[minmax(0,1fr)_430px] lg:gap-14">
           <div>
             <p className="text-sm font-medium uppercase tracking-widest text-primary">Para estudantes angolanos</p>
             <h1 className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-tight md:text-5xl lg:text-6xl">
@@ -31,8 +31,8 @@ function Index() {
               Descubra bolsas internas e externas num só lugar e conte com mentores para preparar uma candidatura vencedora.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/bolsas" className="rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground">Ver bolsas</Link>
-              <Link to="/mentorias" className="rounded-full border border-border px-6 py-3 font-medium">Mentorias</Link>
+              <Link to="/bolsas" className="rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">Ver bolsas</Link>
+              <Link to="/mentorias" className="rounded-full border border-border px-6 py-3 font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">Mentorias</Link>
             </div>
           </div>
           <img
@@ -41,7 +41,7 @@ function Index() {
             width={912}
             height={1200}
             fetchPriority="high"
-            className="mx-auto aspect-[4/5] w-full max-w-[340px] rounded-tl-[5rem] rounded-tr-xl rounded-br-[5rem] rounded-bl-xl object-cover object-top shadow-[var(--shadow-card)] sm:max-w-[380px] md:max-w-none"
+            className="mx-auto aspect-[4/5] w-full max-w-[360px] rounded-tl-[5rem] rounded-tr-xl rounded-br-[5rem] rounded-bl-xl object-cover object-top shadow-[var(--shadow-card)] transition-transform duration-500 ease-out motion-reduce:transition-none md:max-w-none md:motion-safe:hover:scale-[1.015]"
           />
         </div>
         <div className="mt-12 grid max-w-xl grid-cols-3 gap-4 border-t border-border pt-6 sm:gap-6 md:mt-14">
@@ -50,7 +50,7 @@ function Index() {
           ))}
         </div>
       </section>
-      <section className="bg-muted py-16">
+      <section className="border-y border-border bg-muted py-16">
         <div className="mx-auto max-w-6xl px-5">
           <h2 className="font-display text-3xl font-semibold">Bolsas em destaque</h2>
           <div className="mt-8 grid gap-5 md:grid-cols-3">
