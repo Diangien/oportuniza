@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/SiteHeader";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -16,7 +18,6 @@ export const Route = createFileRoute("/login")({
 });
 
 function Login() {
-  const input = "mt-1.5 w-full rounded-xl border border-input bg-card px-4 py-2.5 text-sm outline-none focus:border-primary";
   return (
     <div className="min-h-screen">
       <SiteHeader />
@@ -26,20 +27,22 @@ function Login() {
         <form onSubmit={(e) => e.preventDefault()} className="mt-8 space-y-5 rounded-2xl border border-border bg-card p-6">
           <label className="block text-sm font-medium">
             E-mail
-            <input type="email" required placeholder="nome@exemplo.ao" className={input} />
+            <Input type="email" required placeholder="nome@exemplo.ao" className="mt-1.5" />
           </label>
           <label className="block text-sm font-medium">
             <span className="flex items-center justify-between">
               Palavra-passe
               <button type="button" className="text-xs font-normal text-primary hover:underline">Esqueci a palavra-passe</button>
             </span>
-            <input type="password" required placeholder="••••••••" className={input} />
+            <Input type="password" required placeholder="••••••••" className="mt-1.5" />
           </label>
-          <button type="submit" className="w-full rounded-full bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground">Entrar</button>
+          <Button type="submit" size="lg" className="w-full">Entrar</Button>
         </form>
         <div className="mt-6 flex items-center justify-between gap-3 text-sm">
           <span className="text-muted-foreground">Ainda não tem conta?</span>
-          <Link to="/registo" className="rounded-full border border-border px-4 py-2 font-medium">Criar conta</Link>
+          <Button asChild variant="outline">
+            <Link to="/registo">Criar conta</Link>
+          </Button>
         </div>
         <p className="mt-10 text-sm text-muted-foreground">
           Só quer espreitar? <Link to="/bolsas" className="text-primary hover:underline">Consulte as bolsas sem entrar</Link>.

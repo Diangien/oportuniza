@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/SiteHeader";
 import { BolsaCard } from "@/components/BolsaCard";
+import { Button } from "@/components/ui/button";
 import { bolsas } from "@/lib/mock";
 import estudante from "@/assets/estudante.jpg";
 
@@ -31,8 +32,12 @@ function Index() {
               Descubra bolsas internas e externas num só lugar e conte com mentores para preparar uma candidatura vencedora.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/bolsas" className="rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">Ver bolsas</Link>
-              <Link to="/mentorias" className="rounded-full border border-border px-6 py-3 font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">Mentorias</Link>
+              <Button asChild size="lg">
+                <Link to="/bolsas">Ver bolsas</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline">
+                <Link to="/mentorias">Mentorias</Link>
+              </Button>
             </div>
           </div>
           <img
@@ -41,7 +46,7 @@ function Index() {
             width={912}
             height={1200}
             fetchPriority="high"
-            className="mx-auto aspect-[4/5] w-full max-w-[360px] rounded-tl-[5rem] rounded-tr-xl rounded-br-[5rem] rounded-bl-xl object-cover object-top shadow-[var(--shadow-card)] transition-transform duration-500 ease-out motion-reduce:transition-none md:max-w-none md:motion-safe:hover:scale-[1.015]"
+            className="mx-auto aspect-[4/5] w-full max-w-[360px] rounded-tl-[5rem] rounded-tr-xl rounded-br-[5rem] rounded-bl-xl object-cover object-top shadow-card transition-transform duration-500 ease-out motion-reduce:transition-none md:max-w-none md:motion-safe:hover:scale-[1.015]"
           />
         </div>
         <div className="mt-12 grid max-w-xl grid-cols-3 gap-4 border-t border-border pt-6 sm:gap-6 md:mt-14">

@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Camera, Check, ChevronDown, Eye, EyeOff, Trash2 } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export const Route = createFileRoute("/registo")({
   head: () => ({
@@ -58,8 +60,9 @@ function Registo() {
   const forca = medeForca(passe);
   const coincide = confirmar.length > 0 && passe === confirmar;
 
+  // Mesmo aspecto do <Input>, para o <select> nativo.
   const campo =
-    "w-full rounded-xl border border-input bg-card px-4 py-2.5 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10";
+    "w-full rounded-xl border border-input bg-card px-4 py-2.5 text-base outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 md:text-sm";
   const etiqueta = "block text-sm font-medium";
   const titulo = "mb-1.5 flex items-baseline justify-between gap-3";
 
@@ -83,7 +86,7 @@ function Registo() {
     <div className="min-h-screen">
       <SiteHeader />
       <main className="mx-auto max-w-5xl px-5 py-12 md:py-16">
-        <div className="grid overflow-hidden rounded-3xl border border-border bg-card shadow-[var(--shadow-card)] lg:grid-cols-[290px_minmax(0,1fr)]">
+        <div className="grid overflow-hidden rounded-3xl border border-border bg-card shadow-card lg:grid-cols-[290px_minmax(0,1fr)]">
           <aside className="relative hidden overflow-hidden bg-muted p-9 lg:flex lg:flex-col lg:justify-between">
             <div aria-hidden className="absolute -right-24 -top-24 h-64 w-64 rounded-full bg-primary/5" />
             <div aria-hidden className="absolute -bottom-28 -left-20 h-60 w-60 rounded-full bg-accent/25" />
@@ -116,19 +119,18 @@ function Registo() {
             <form onSubmit={(e) => e.preventDefault()} className="mt-9 space-y-6">
               <label className={etiqueta}>
                 <span className={titulo}>Nome completo</span>
-                <input id="nome" name="nome" required autoComplete="name" placeholder="Jose Bongo Nkana" className={campo} />
+                <Input id="nome" name="nome" required autoComplete="name" placeholder="Jose Bongo Nkana" />
               </label>
 
               <label className={etiqueta}>
                 <span className={titulo}>E-mail</span>
-                <input
+                <Input
                   id="email"
                   name="email"
                   type="email"
                   required
                   autoComplete="email"
                   placeholder="nome@exemplo.ao"
-                  className={campo}
                 />
               </label>
 
@@ -136,7 +138,7 @@ function Registo() {
                 <label className={etiqueta}>
                   <span className={titulo}>Palavra-passe</span>
                   <span className="relative block">
-                    <input
+                    <Input
                       id="passe"
                       name="passe"
                       type={verPasse ? "text" : "password"}
@@ -144,7 +146,7 @@ function Registo() {
                       autoComplete="new-password"
                       placeholder="mínimo 8 caracteres"
                       onChange={(e) => setPasse(e.target.value)}
-                      className={`${campo} pr-11`}
+                      className="pr-11"
                     />
                     <button
                       type="button"
@@ -174,7 +176,7 @@ function Registo() {
                 <label className={etiqueta}>
                   <span className={titulo}>Confirmar palavra-passe</span>
                   <span className="relative block">
-                    <input
+                    <Input
                       id="confirmar"
                       name="confirmar"
                       type={verConfirmar ? "text" : "password"}
@@ -182,7 +184,7 @@ function Registo() {
                       autoComplete="new-password"
                       placeholder="repita a palavra-passe"
                       onChange={(e) => setConfirmar(e.target.value)}
-                      className={`${campo} pr-11`}
+                      className="pr-11"
                     />
                     <button
                       type="button"
@@ -236,7 +238,7 @@ function Registo() {
                         type="button"
                         aria-pressed={activa}
                         onClick={() => alteraArea(area)}
-                        className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm transition-colors ${
+                        className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
                           activa
                             ? "border-primary bg-primary text-primary-foreground"
                             : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground"
@@ -303,22 +305,16 @@ function Registo() {
                 </span>
               </label>
 
-              <button
-                type="submit"
-                className="w-full rounded-full bg-primary px-4 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
-              >
+              <Button type="submit" size="lg" className="w-full">
                 Criar conta
-              </button>
+              </Button>
             </form>
 
             <div className="mt-7 flex items-center justify-between gap-3 border-t border-border pt-6 text-sm">
               <span className="text-muted-foreground">Já tem conta?</span>
-              <Link
-                to="/login"
-                className="rounded-full border border-border px-4 py-2 font-medium transition-colors hover:border-primary/40"
-              >
-                Entrar
-              </Link>
+              <Button asChild variant="outline">
+                <Link to="/login">Entrar</Link>
+              </Button>
             </div>
           </section>
         </div>
