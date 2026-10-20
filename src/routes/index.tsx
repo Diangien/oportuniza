@@ -41,7 +41,7 @@ function Index() {
             width={912}
             height={1200}
             fetchPriority="high"
-            className="mx-auto aspect-[4/5] w-full max-w-[360px] rounded-tl-[5rem] rounded-tr-xl rounded-br-[5rem] rounded-bl-xl object-cover object-top shadow-[var(--shadow-card)] transition-transform duration-500 ease-out motion-reduce:transition-none md:max-w-none md:hover:scale-[1.015] lg:max-w-none lg:col-span-1"
+            className="mx-auto aspect-[4/5] w-full max-w-[360px] rounded-tl-[5rem] rounded-tr-xl rounded-br-[5rem] rounded-bl-xl object-cover object-top shadow-[var(--shadow-card)] transition-transform duration-500 ease-out motion-reduce:transition-none md:max-w-none md:motion-safe:hover:scale-[1.015]"
           />
         </div>
         <div className="mt-12 grid max-w-xl grid-cols-3 gap-4 border-t border-border pt-6 sm:gap-6 md:mt-14">
