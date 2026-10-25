@@ -13,14 +13,16 @@ dist-ssr
 .output
 .vinxi
 .tanstack/**
+.claude/
 .nitro
 *.local
 .env
 .env.*
-.claude
+
+
 docs
 plano.md
-src/test
+
 
 # Wrangler / Cloudflare
 .wrangler/
