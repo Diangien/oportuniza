@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/SiteHeader";
 import { BolsaCard } from "@/components/BolsaCard";
+import { SlideUpText } from "@/components/slide-up-text";
 import { Button } from "@/components/ui/button";
 import { bolsas } from "@/lib/mock";
 import estudante from "@/assets/estudante.jpg";
@@ -26,7 +27,10 @@ function Index() {
           <div>
             <p className="text-sm font-medium uppercase tracking-widest text-primary">Para estudantes angolanos</p>
             <h1 className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-tight md:text-5xl lg:text-6xl">
-              A sua próxima bolsa de estudo, <em className="text-primary">em Angola ou no mundo.</em>
+              <SlideUpText>A sua próxima bolsa de estudo,</SlideUpText>
+              <em className="text-primary">
+                <SlideUpText delay={0.6}>em Angola ou no mundo.</SlideUpText>
+              </em>
             </h1>
             <p className="mt-6 max-w-xl text-lg text-muted-foreground">
               Descubra bolsas internas e externas num só lugar e conte com mentores para preparar uma candidatura vencedora.

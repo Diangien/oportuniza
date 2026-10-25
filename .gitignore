@@ -17,6 +17,10 @@ dist-ssr
 *.local
 .env
 .env.*
+.claude
+docs
+plano.md
+src/test
 
 # Wrangler / Cloudflare
 .wrangler/

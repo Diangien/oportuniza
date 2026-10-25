@@ -14,4 +14,32 @@ describe("App routing", () => {
 
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
   });
+
+  it("matches the scholarship details page for /bolsas/1", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+
+    const matches = router.matchRoutes("/bolsas/1");
+
+    expect(matches.at(-1)?.routeId).toBe("/bolsas/$id");
+    expect(matches.at(-1)?.params).toMatchObject({ id: "1" });
+  });
+
+  it.each([
+    ["/admin", "/admin/"],
+    ["/admin/utilizadores/abc", "/admin/utilizadores/$id"],
+    ["/mentor/clientes/abc", "/mentor/clientes/$id"],
+    ["/cliente/mentorias", "/cliente/mentorias"],
+  ])("matches the private area page for %s", (caminho, rota) => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+
+    expect(router.matchRoutes(caminho).at(-1)?.routeId).toBe(rota);
+  });
+
+  it("matches the terms page for /termos", () => {
+    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+
+    const matches = router.matchRoutes("/termos");
+
+    expect(matches.at(-1)?.routeId).toBe("/termos");
+  });
 });

@@ -1,9 +1,19 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { Camera, Check, ChevronDown, Eye, EyeOff, Trash2 } from "lucide-react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useState, type FormEvent } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { toast } from "sonner";
 import { SiteHeader } from "@/components/SiteHeader";
+import { CampoFoto } from "@/components/formulario/CampoFoto";
+import { MensagemErro, propsErro } from "@/components/formulario/MensagemErro";
+import { SeletorAreas } from "@/components/formulario/SeletorAreas";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { NativeSelect } from "@/components/ui/native-select";
+import { GRAUS } from "@/lib/catalogo";
+import { criarUtilizador, ErroDados, iniciarSessao } from "@/lib/dados/repositorio";
+import { erroDeCampo, esquemaRegisto, validar, type ErrosDe } from "@/lib/validacao";
+
+type Erros = ErrosDe<typeof esquemaRegisto>;
 
 export const Route = createFileRoute("/registo")({
   head: () => ({
@@ -18,21 +28,6 @@ export const Route = createFileRoute("/registo")({
   }),
   component: Registo,
 });
-
-const GRAUS = ["Licenciatura", "Mestrado", "Doutoramento", "Phd", "Ensino Médio"];
-
-const AREAS = [
-  "Tecnologia",
-  "Engenharia",
-  "Saúde",
-  "Gestão",
-  "Educação",
-  "Direito",
-  "Ciências Sociais",
-  "Ambiente",
-  "Artes",
-  "Ciências Exactas",
-];
 
 const PROMESAS = [
   "Bolsas internas e externas reunidas num só lugar",
@@ -49,38 +44,56 @@ function medeForca(passe: string) {
 }
 
 function Registo() {
+  const navigate = useNavigate();
   const [foto, setFoto] = useState<string | null>(null);
-  const [nomeFoto, setNomeFoto] = useState("");
   const [areas, setAreas] = useState<string[]>([]);
   const [passe, setPasse] = useState("");
   const [confirmar, setConfirmar] = useState("");
   const [verPasse, setVerPasse] = useState(false);
   const [verConfirmar, setVerConfirmar] = useState(false);
+  const [erros, setErros] = useState<Erros>({});
+  const [aEnviar, setAEnviar] = useState(false);
 
   const forca = medeForca(passe);
   const coincide = confirmar.length > 0 && passe === confirmar;
 
-  // Mesmo aspecto do <Input>, para o <select> nativo.
-  const campo =
-    "w-full rounded-xl border border-input bg-card px-4 py-2.5 text-base outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 md:text-sm";
   const etiqueta = "block text-sm font-medium";
   const titulo = "mb-1.5 flex items-baseline justify-between gap-3";
 
-  const escolheFoto = (ficheiro?: File) => {
-    if (!ficheiro) return;
-    if (foto) URL.revokeObjectURL(foto);
-    setFoto(URL.createObjectURL(ficheiro));
-    setNomeFoto(ficheiro.name);
+  const mostraErros = (form: HTMLFormElement, novos: Erros) => {
+    setErros(novos);
+    // Leva o foco ao primeiro campo com erro, depois de o React o marcar.
+    requestAnimationFrame(() => form.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus());
   };
 
-  const limpaFoto = () => {
-    if (foto) URL.revokeObjectURL(foto);
-    setFoto(null);
-    setNomeFoto("");
-  };
+  const aoSubmeter = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const campos = new FormData(form);
+    const resultado = validar(esquemaRegisto, {
+      nome: campos.get("nome"),
+      email: campos.get("email"),
+      senha: passe,
+      confirmar,
+      grauAcademico: (campos.get("grau") as string) || null,
+      areasInteresse: areas,
+      aceito: campos.get("aceito") === "on",
+    });
+    if (!resultado.ok) return mostraErros(form, resultado.erros);
 
-  const alteraArea = (area: string) =>
-    setAreas((actual) => (actual.includes(area) ? actual.filter((a) => a !== area) : [...actual, area]));
+    const { nome, email, senha, grauAcademico, areasInteresse } = resultado.dados;
+    setAEnviar(true);
+    try {
+      criarUtilizador({ tipo: "cliente", nome, email, senha, grauAcademico, areasInteresse, fotoPerfil: foto });
+      iniciarSessao(email, senha);
+      toast.success("Conta criada com sucesso.");
+      void navigate({ to: "/cliente" });
+    } catch (erro) {
+      setAEnviar(false);
+      if (erro instanceof ErroDados && erro.campo) return mostraErros(form, erroDeCampo(erro.campo, erro.message));
+      toast.error(erro instanceof Error ? erro.message : "Não foi possível criar a conta.");
+    }
+  };
 
   return (
     <div className="min-h-screen">
@@ -106,20 +119,26 @@ function Registo() {
               ))}
             </ol>
             <p className="relative mt-10 border-t border-border pt-5 text-xs text-muted-foreground">
-              Protótipo: os dados deste formulário não são enviados nem guardados.
+              Protótipo: os dados ficam guardados apenas neste browser.
             </p>
           </aside>
 
           <section className="p-6 sm:p-9 md:p-12">
             <h1 className="font-display text-4xl font-semibold">Criar conta</h1>
-            <p className="mt-2 text-muted-foreground">
-              Leva menos de um minuto. Depois entra com o e-mail e a palavra-passe.
-            </p>
+            <p className="mt-2 text-muted-foreground">Leva menos de um minuto.</p>
 
-            <form onSubmit={(e) => e.preventDefault()} className="mt-9 space-y-6">
+            <form onSubmit={aoSubmeter} noValidate className="mt-9 space-y-6">
               <label className={etiqueta}>
                 <span className={titulo}>Nome completo</span>
-                <Input id="nome" name="nome" required autoComplete="name" placeholder="Jose Bongo Nkana" />
+                <Input
+                  id="nome"
+                  name="nome"
+                  required
+                  autoComplete="name"
+                  placeholder="Jose Bongo Nkana"
+                  {...propsErro("nome", erros.nome)}
+                />
+                <MensagemErro id="nome-erro">{erros.nome}</MensagemErro>
               </label>
 
               <label className={etiqueta}>
@@ -131,7 +150,9 @@ function Registo() {
                   required
                   autoComplete="email"
                   placeholder="nome@exemplo.ao"
+                  {...propsErro("email", erros.email)}
                 />
+                <MensagemErro id="email-erro">{erros.email}</MensagemErro>
               </label>
 
               <div className="grid gap-6 sm:grid-cols-2">
@@ -139,14 +160,15 @@ function Registo() {
                   <span className={titulo}>Palavra-passe</span>
                   <span className="relative block">
                     <Input
-                      id="passe"
-                      name="passe"
+                      id="senha"
+                      name="senha"
                       type={verPasse ? "text" : "password"}
                       required
                       autoComplete="new-password"
                       placeholder="mínimo 8 caracteres"
                       onChange={(e) => setPasse(e.target.value)}
                       className="pr-11"
+                      {...propsErro("senha", erros.senha)}
                     />
                     <button
                       type="button"
@@ -171,6 +193,7 @@ function Registo() {
                       {["Fraca", "Fraca", "Média", "Boa"][forca]}
                     </span>
                   </span>
+                  <MensagemErro id="senha-erro">{erros.senha}</MensagemErro>
                 </label>
 
                 <label className={etiqueta}>
@@ -185,6 +208,7 @@ function Registo() {
                       placeholder="repita a palavra-passe"
                       onChange={(e) => setConfirmar(e.target.value)}
                       className="pr-11"
+                      {...propsErro("confirmar", erros.confirmar)}
                     />
                     <button
                       type="button"
@@ -196,117 +220,64 @@ function Registo() {
                       {verConfirmar ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </span>
-                  <span className={`mt-2 text-xs ${coincide ? "text-primary" : "text-transparent"}`}>
-                    As palavras-passe coincidem
-                  </span>
+                  {erros.confirmar ? (
+                    <MensagemErro id="confirmar-erro">{erros.confirmar}</MensagemErro>
+                  ) : (
+                    <span className={`mt-2 block text-xs ${coincide ? "text-primary" : "text-transparent"}`}>
+                      As palavras-passe coincidem
+                    </span>
+                  )}
                 </label>
               </div>
 
               <label className={etiqueta}>
-                <span className={titulo}>Grau académico</span>
-                <span className="relative block">
-                  <select id="grau" name="grau" required defaultValue="" className={`${campo} appearance-none pr-11`}>
-                    <option value="" disabled>
-                      Escolha o seu grau
-                    </option>
-                    {GRAUS.map((g) => (
-                      <option key={g} value={g}>
-                        {g}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown
-                    aria-hidden
-                    className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
-                  />
+                <span className={titulo}>
+                  Grau académico <span className="text-xs font-normal text-muted-foreground">opcional</span>
                 </span>
+                <NativeSelect id="grau" name="grau" defaultValue="">
+                  <option value="">Escolha o seu grau</option>
+                  {GRAUS.map((g) => (
+                    <option key={g} value={g}>
+                      {g}
+                    </option>
+                  ))}
+                </NativeSelect>
               </label>
 
-              <fieldset>
-                <legend className={titulo}>
-                  Áreas de interesse
-                  <span className="text-xs font-normal text-muted-foreground">
-                    {areas.length > 0 ? `${areas.length} selecionada${areas.length > 1 ? "s" : ""}` : "escolha uma ou mais"}
-                  </span>
-                </legend>
-                <div className="mt-1 flex flex-wrap gap-2">
-                  {AREAS.map((area) => {
-                    const activa = areas.includes(area);
-                    return (
-                      <button
-                        key={area}
-                        type="button"
-                        aria-pressed={activa}
-                        onClick={() => alteraArea(area)}
-                        className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
-                          activa
-                            ? "border-primary bg-primary text-primary-foreground"
-                            : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground"
-                        }`}
-                      >
-                        {activa && <Check className="h-3.5 w-3.5" />}
-                        {area}
-                      </button>
-                    );
-                  })}
-                </div>
-              </fieldset>
+              <SeletorAreas valor={areas} onChange={setAreas} />
+
+              <CampoFoto valor={foto} onChange={setFoto} />
 
               <div>
-                <span className={titulo}>Foto de perfil <span className="text-xs font-normal text-muted-foreground">opcional</span></span>
-                <div className="mt-1 flex flex-wrap items-center gap-4 rounded-2xl border border-border bg-muted/40 p-4">
-                  <label className="group relative h-20 w-20 shrink-0 cursor-pointer overflow-hidden rounded-full border-2 border-dashed border-border bg-card transition-colors hover:border-primary">
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="sr-only"
-                      onChange={(e) => escolheFoto(e.target.files?.[0])}
-                    />
-                    {foto ? (
-                      <img src={foto} alt="Pré-visualização da foto de perfil" className="h-full w-full object-cover" />
-                    ) : (
-                      <span className="grid h-full w-full place-items-center text-muted-foreground transition-colors group-hover:text-primary">
-                        <Camera className="h-5 w-5" />
-                        <span className="sr-only">Escolher foto de perfil</span>
-                      </span>
-                    )}
-                  </label>
-                  <div className="min-w-0 text-sm">
-                    <p className="text-muted-foreground">
-                      {nomeFoto ? (
-                        <span className="truncate text-foreground">{nomeFoto}</span>
-                      ) : (
-                        "Clique no círculo para carregar uma imagem."
-                      )}
-                    </p>
-                    <p className="mt-1 text-xs text-muted-foreground">JPG ou PNG, até 2 MB.</p>
-                    {foto && (
-                      <button
-                        type="button"
-                        onClick={limpaFoto}
-                        className="mt-2 inline-flex items-center gap-1.5 text-xs text-muted-foreground underline-offset-4 hover:text-destructive hover:underline"
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                        Remover foto
-                      </button>
-                    )}
-                  </div>
-                </div>
+                <label className="flex items-start gap-3 text-sm text-muted-foreground">
+                  <input
+                    type="checkbox"
+                    name="aceito"
+                    required
+                    className="mt-0.5 h-4 w-4 shrink-0 accent-primary"
+                    {...propsErro("aceito", erros.aceito)}
+                  />
+                  <span>
+                    Aceito os{" "}
+                    {/* Novo separador: o formulário mantém o que já foi preenchido. Clicar num
+                        link dentro do <label> não altera a caixa de aceitação. */}
+                    <Link
+                      to="/termos"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-sm font-medium text-primary underline underline-offset-4 hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    >
+                      termos de utilização e a política de privacidade
+                      <span className="sr-only"> (abre num novo separador)</span>
+                    </Link>{" "}
+                    do BolsaAngola.
+                  </span>
+                </label>
+                <MensagemErro id="aceito-erro">{erros.aceito}</MensagemErro>
               </div>
 
-              <label className="flex items-start gap-3 text-sm text-muted-foreground">
-                <input
-                  type="checkbox"
-                  required
-                  className="mt-0.5 h-4 w-4 shrink-0 accent-primary"
-                />
-                <span>
-                  Aceito os termos de utilização e a política de privacidade do BolsaAngola.
-                </span>
-              </label>
-
-              <Button type="submit" size="lg" className="w-full">
-                Criar conta
+              <Button type="submit" size="lg" className="w-full" disabled={aEnviar}>
+                {aEnviar ? "A criar conta…" : "Criar conta"}
               </Button>
             </form>
 

@@ -10,24 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as BolsasRouteImport } from './routes/bolsas'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as ClienteRouteImport } from './routes/cliente'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as MentorRouteImport } from './routes/mentor'
 import { Route as MentoriasRouteImport } from './routes/mentorias'
 import { Route as RegistoRouteImport } from './routes/registo'
+import { Route as TermosRouteImport } from './routes/termos'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AdminMentoriasRouteImport } from './routes/admin/mentorias'
+import { Route as AdminPerfilRouteImport } from './routes/admin/perfil'
+import { Route as BolsasIndexRouteImport } from './routes/bolsas/index'
+import { Route as BolsasIdRouteImport } from './routes/bolsas/$id'
+import { Route as ClienteIndexRouteImport } from './routes/cliente/index'
+import { Route as ClienteBolsasRouteImport } from './routes/cliente/bolsas'
+import { Route as ClienteFavoritasRouteImport } from './routes/cliente/favoritas'
+import { Route as ClienteMentoriasRouteImport } from './routes/cliente/mentorias'
+import { Route as ClientePerfilRouteImport } from './routes/cliente/perfil'
+import { Route as MentorIndexRouteImport } from './routes/mentor/index'
+import { Route as MentorPerfilRouteImport } from './routes/mentor/perfil'
+import { Route as AdminUtilizadoresIndexRouteImport } from './routes/admin/utilizadores/index'
+import { Route as AdminUtilizadoresIdRouteImport } from './routes/admin/utilizadores/$id'
+import { Route as MentorClientesIndexRouteImport } from './routes/mentor/clientes/index'
+import { Route as MentorClientesIdRouteImport } from './routes/mentor/clientes/$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BolsasRoute = BolsasRouteImport.update({
-  id: '/bolsas',
-  path: '/bolsas',
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClienteRoute = ClienteRouteImport.update({
+  id: '/cliente',
+  path: '/cliente',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MentorRoute = MentorRouteImport.update({
+  id: '/mentor',
+  path: '/mentor',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MentoriasRoute = MentoriasRouteImport.update({
@@ -40,43 +69,257 @@ const RegistoRoute = RegistoRouteImport.update({
   path: '/registo',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TermosRoute = TermosRouteImport.update({
+  id: '/termos',
+  path: '/termos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminMentoriasRoute = AdminMentoriasRouteImport.update({
+  id: '/mentorias',
+  path: '/mentorias',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPerfilRoute = AdminPerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => AdminRoute,
+} as any)
+const BolsasIndexRoute = BolsasIndexRouteImport.update({
+  id: '/bolsas/',
+  path: '/bolsas/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BolsasIdRoute = BolsasIdRouteImport.update({
+  id: '/bolsas/$id',
+  path: '/bolsas/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClienteIndexRoute = ClienteIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ClienteRoute,
+} as any)
+const ClienteBolsasRoute = ClienteBolsasRouteImport.update({
+  id: '/bolsas',
+  path: '/bolsas',
+  getParentRoute: () => ClienteRoute,
+} as any)
+const ClienteFavoritasRoute = ClienteFavoritasRouteImport.update({
+  id: '/favoritas',
+  path: '/favoritas',
+  getParentRoute: () => ClienteRoute,
+} as any)
+const ClienteMentoriasRoute = ClienteMentoriasRouteImport.update({
+  id: '/mentorias',
+  path: '/mentorias',
+  getParentRoute: () => ClienteRoute,
+} as any)
+const ClientePerfilRoute = ClientePerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => ClienteRoute,
+} as any)
+const MentorIndexRoute = MentorIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MentorRoute,
+} as any)
+const MentorPerfilRoute = MentorPerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => MentorRoute,
+} as any)
+const AdminUtilizadoresIndexRoute = AdminUtilizadoresIndexRouteImport.update({
+  id: '/utilizadores/',
+  path: '/utilizadores/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminUtilizadoresIdRoute = AdminUtilizadoresIdRouteImport.update({
+  id: '/utilizadores/$id',
+  path: '/utilizadores/$id',
+  getParentRoute: () => AdminRoute,
+} as any)
+const MentorClientesIndexRoute = MentorClientesIndexRouteImport.update({
+  id: '/clientes/',
+  path: '/clientes/',
+  getParentRoute: () => MentorRoute,
+} as any)
+const MentorClientesIdRoute = MentorClientesIdRouteImport.update({
+  id: '/clientes/$id',
+  path: '/clientes/$id',
+  getParentRoute: () => MentorRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/bolsas': typeof BolsasRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/cliente': typeof ClienteRouteWithChildren
   '/login': typeof LoginRoute
+  '/mentor': typeof MentorRouteWithChildren
   '/mentorias': typeof MentoriasRoute
   '/registo': typeof RegistoRoute
+  '/termos': typeof TermosRoute
+  '/admin/mentorias': typeof AdminMentoriasRoute
+  '/admin/perfil': typeof AdminPerfilRoute
+  '/bolsas/$id': typeof BolsasIdRoute
+  '/cliente/bolsas': typeof ClienteBolsasRoute
+  '/cliente/favoritas': typeof ClienteFavoritasRoute
+  '/cliente/mentorias': typeof ClienteMentoriasRoute
+  '/cliente/perfil': typeof ClientePerfilRoute
+  '/mentor/perfil': typeof MentorPerfilRoute
+  '/admin/': typeof AdminIndexRoute
+  '/bolsas/': typeof BolsasIndexRoute
+  '/cliente/': typeof ClienteIndexRoute
+  '/mentor/': typeof MentorIndexRoute
+  '/admin/utilizadores/$id': typeof AdminUtilizadoresIdRoute
+  '/mentor/clientes/$id': typeof MentorClientesIdRoute
+  '/admin/utilizadores/': typeof AdminUtilizadoresIndexRoute
+  '/mentor/clientes/': typeof MentorClientesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/bolsas': typeof BolsasRoute
   '/login': typeof LoginRoute
   '/mentorias': typeof MentoriasRoute
   '/registo': typeof RegistoRoute
+  '/termos': typeof TermosRoute
+  '/admin/mentorias': typeof AdminMentoriasRoute
+  '/admin/perfil': typeof AdminPerfilRoute
+  '/bolsas/$id': typeof BolsasIdRoute
+  '/cliente/bolsas': typeof ClienteBolsasRoute
+  '/cliente/favoritas': typeof ClienteFavoritasRoute
+  '/cliente/mentorias': typeof ClienteMentoriasRoute
+  '/cliente/perfil': typeof ClientePerfilRoute
+  '/mentor/perfil': typeof MentorPerfilRoute
+  '/admin': typeof AdminIndexRoute
+  '/bolsas': typeof BolsasIndexRoute
+  '/cliente': typeof ClienteIndexRoute
+  '/mentor': typeof MentorIndexRoute
+  '/admin/utilizadores/$id': typeof AdminUtilizadoresIdRoute
+  '/mentor/clientes/$id': typeof MentorClientesIdRoute
+  '/admin/utilizadores': typeof AdminUtilizadoresIndexRoute
+  '/mentor/clientes': typeof MentorClientesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/bolsas': typeof BolsasRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/cliente': typeof ClienteRouteWithChildren
   '/login': typeof LoginRoute
+  '/mentor': typeof MentorRouteWithChildren
   '/mentorias': typeof MentoriasRoute
   '/registo': typeof RegistoRoute
+  '/termos': typeof TermosRoute
+  '/admin/mentorias': typeof AdminMentoriasRoute
+  '/admin/perfil': typeof AdminPerfilRoute
+  '/bolsas/$id': typeof BolsasIdRoute
+  '/cliente/bolsas': typeof ClienteBolsasRoute
+  '/cliente/favoritas': typeof ClienteFavoritasRoute
+  '/cliente/mentorias': typeof ClienteMentoriasRoute
+  '/cliente/perfil': typeof ClientePerfilRoute
+  '/mentor/perfil': typeof MentorPerfilRoute
+  '/admin/': typeof AdminIndexRoute
+  '/bolsas/': typeof BolsasIndexRoute
+  '/cliente/': typeof ClienteIndexRoute
+  '/mentor/': typeof MentorIndexRoute
+  '/admin/utilizadores/$id': typeof AdminUtilizadoresIdRoute
+  '/mentor/clientes/$id': typeof MentorClientesIdRoute
+  '/admin/utilizadores/': typeof AdminUtilizadoresIndexRoute
+  '/mentor/clientes/': typeof MentorClientesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/bolsas' | '/login' | '/mentorias' | '/registo'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/cliente'
+    | '/login'
+    | '/mentor'
+    | '/mentorias'
+    | '/registo'
+    | '/termos'
+    | '/admin/mentorias'
+    | '/admin/perfil'
+    | '/bolsas/$id'
+    | '/cliente/bolsas'
+    | '/cliente/favoritas'
+    | '/cliente/mentorias'
+    | '/cliente/perfil'
+    | '/mentor/perfil'
+    | '/admin/'
+    | '/bolsas/'
+    | '/cliente/'
+    | '/mentor/'
+    | '/admin/utilizadores/$id'
+    | '/mentor/clientes/$id'
+    | '/admin/utilizadores/'
+    | '/mentor/clientes/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/bolsas' | '/login' | '/mentorias' | '/registo'
-  id: '__root__' | '/' | '/bolsas' | '/login' | '/mentorias' | '/registo'
+  to:
+    | '/'
+    | '/login'
+    | '/mentorias'
+    | '/registo'
+    | '/termos'
+    | '/admin/mentorias'
+    | '/admin/perfil'
+    | '/bolsas/$id'
+    | '/cliente/bolsas'
+    | '/cliente/favoritas'
+    | '/cliente/mentorias'
+    | '/cliente/perfil'
+    | '/mentor/perfil'
+    | '/admin'
+    | '/bolsas'
+    | '/cliente'
+    | '/mentor'
+    | '/admin/utilizadores/$id'
+    | '/mentor/clientes/$id'
+    | '/admin/utilizadores'
+    | '/mentor/clientes'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/cliente'
+    | '/login'
+    | '/mentor'
+    | '/mentorias'
+    | '/registo'
+    | '/termos'
+    | '/admin/mentorias'
+    | '/admin/perfil'
+    | '/bolsas/$id'
+    | '/cliente/bolsas'
+    | '/cliente/favoritas'
+    | '/cliente/mentorias'
+    | '/cliente/perfil'
+    | '/mentor/perfil'
+    | '/admin/'
+    | '/bolsas/'
+    | '/cliente/'
+    | '/mentor/'
+    | '/admin/utilizadores/$id'
+    | '/mentor/clientes/$id'
+    | '/admin/utilizadores/'
+    | '/mentor/clientes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  BolsasRoute: typeof BolsasRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  ClienteRoute: typeof ClienteRouteWithChildren
   LoginRoute: typeof LoginRoute
+  MentorRoute: typeof MentorRouteWithChildren
   MentoriasRoute: typeof MentoriasRoute
   RegistoRoute: typeof RegistoRoute
+  TermosRoute: typeof TermosRoute
+  BolsasIdRoute: typeof BolsasIdRoute
+  BolsasIndexRoute: typeof BolsasIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -88,11 +331,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/bolsas': {
-      id: '/bolsas'
-      path: '/bolsas'
-      fullPath: '/bolsas'
-      preLoaderRoute: typeof BolsasRouteImport
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cliente': {
+      id: '/cliente'
+      path: '/cliente'
+      fullPath: '/cliente'
+      preLoaderRoute: typeof ClienteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -100,6 +350,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mentor': {
+      id: '/mentor'
+      path: '/mentor'
+      fullPath: '/mentor'
+      preLoaderRoute: typeof MentorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mentorias': {
@@ -116,15 +373,193 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegistoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/termos': {
+      id: '/termos'
+      path: '/termos'
+      fullPath: '/termos'
+      preLoaderRoute: typeof TermosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/mentorias': {
+      id: '/admin/mentorias'
+      path: '/mentorias'
+      fullPath: '/admin/mentorias'
+      preLoaderRoute: typeof AdminMentoriasRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/perfil': {
+      id: '/admin/perfil'
+      path: '/perfil'
+      fullPath: '/admin/perfil'
+      preLoaderRoute: typeof AdminPerfilRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/bolsas/': {
+      id: '/bolsas/'
+      path: '/bolsas'
+      fullPath: '/bolsas/'
+      preLoaderRoute: typeof BolsasIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bolsas/$id': {
+      id: '/bolsas/$id'
+      path: '/bolsas/$id'
+      fullPath: '/bolsas/$id'
+      preLoaderRoute: typeof BolsasIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cliente/': {
+      id: '/cliente/'
+      path: '/'
+      fullPath: '/cliente/'
+      preLoaderRoute: typeof ClienteIndexRouteImport
+      parentRoute: typeof ClienteRoute
+    }
+    '/cliente/bolsas': {
+      id: '/cliente/bolsas'
+      path: '/bolsas'
+      fullPath: '/cliente/bolsas'
+      preLoaderRoute: typeof ClienteBolsasRouteImport
+      parentRoute: typeof ClienteRoute
+    }
+    '/cliente/favoritas': {
+      id: '/cliente/favoritas'
+      path: '/favoritas'
+      fullPath: '/cliente/favoritas'
+      preLoaderRoute: typeof ClienteFavoritasRouteImport
+      parentRoute: typeof ClienteRoute
+    }
+    '/cliente/mentorias': {
+      id: '/cliente/mentorias'
+      path: '/mentorias'
+      fullPath: '/cliente/mentorias'
+      preLoaderRoute: typeof ClienteMentoriasRouteImport
+      parentRoute: typeof ClienteRoute
+    }
+    '/cliente/perfil': {
+      id: '/cliente/perfil'
+      path: '/perfil'
+      fullPath: '/cliente/perfil'
+      preLoaderRoute: typeof ClientePerfilRouteImport
+      parentRoute: typeof ClienteRoute
+    }
+    '/mentor/': {
+      id: '/mentor/'
+      path: '/'
+      fullPath: '/mentor/'
+      preLoaderRoute: typeof MentorIndexRouteImport
+      parentRoute: typeof MentorRoute
+    }
+    '/mentor/perfil': {
+      id: '/mentor/perfil'
+      path: '/perfil'
+      fullPath: '/mentor/perfil'
+      preLoaderRoute: typeof MentorPerfilRouteImport
+      parentRoute: typeof MentorRoute
+    }
+    '/admin/utilizadores/': {
+      id: '/admin/utilizadores/'
+      path: '/utilizadores'
+      fullPath: '/admin/utilizadores/'
+      preLoaderRoute: typeof AdminUtilizadoresIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/utilizadores/$id': {
+      id: '/admin/utilizadores/$id'
+      path: '/utilizadores/$id'
+      fullPath: '/admin/utilizadores/$id'
+      preLoaderRoute: typeof AdminUtilizadoresIdRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/mentor/clientes/': {
+      id: '/mentor/clientes/'
+      path: '/clientes'
+      fullPath: '/mentor/clientes/'
+      preLoaderRoute: typeof MentorClientesIndexRouteImport
+      parentRoute: typeof MentorRoute
+    }
+    '/mentor/clientes/$id': {
+      id: '/mentor/clientes/$id'
+      path: '/clientes/$id'
+      fullPath: '/mentor/clientes/$id'
+      preLoaderRoute: typeof MentorClientesIdRouteImport
+      parentRoute: typeof MentorRoute
+    }
   }
 }
 
+interface AdminRouteChildren {
+  AdminMentoriasRoute: typeof AdminMentoriasRoute
+  AdminPerfilRoute: typeof AdminPerfilRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+  AdminUtilizadoresIdRoute: typeof AdminUtilizadoresIdRoute
+  AdminUtilizadoresIndexRoute: typeof AdminUtilizadoresIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminMentoriasRoute: AdminMentoriasRoute,
+  AdminPerfilRoute: AdminPerfilRoute,
+  AdminIndexRoute: AdminIndexRoute,
+  AdminUtilizadoresIdRoute: AdminUtilizadoresIdRoute,
+  AdminUtilizadoresIndexRoute: AdminUtilizadoresIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface ClienteRouteChildren {
+  ClienteBolsasRoute: typeof ClienteBolsasRoute
+  ClienteFavoritasRoute: typeof ClienteFavoritasRoute
+  ClienteMentoriasRoute: typeof ClienteMentoriasRoute
+  ClientePerfilRoute: typeof ClientePerfilRoute
+  ClienteIndexRoute: typeof ClienteIndexRoute
+}
+
+const ClienteRouteChildren: ClienteRouteChildren = {
+  ClienteBolsasRoute: ClienteBolsasRoute,
+  ClienteFavoritasRoute: ClienteFavoritasRoute,
+  ClienteMentoriasRoute: ClienteMentoriasRoute,
+  ClientePerfilRoute: ClientePerfilRoute,
+  ClienteIndexRoute: ClienteIndexRoute,
+}
+
+const ClienteRouteWithChildren =
+  ClienteRoute._addFileChildren(ClienteRouteChildren)
+
+interface MentorRouteChildren {
+  MentorPerfilRoute: typeof MentorPerfilRoute
+  MentorIndexRoute: typeof MentorIndexRoute
+  MentorClientesIdRoute: typeof MentorClientesIdRoute
+  MentorClientesIndexRoute: typeof MentorClientesIndexRoute
+}
+
+const MentorRouteChildren: MentorRouteChildren = {
+  MentorPerfilRoute: MentorPerfilRoute,
+  MentorIndexRoute: MentorIndexRoute,
+  MentorClientesIdRoute: MentorClientesIdRoute,
+  MentorClientesIndexRoute: MentorClientesIndexRoute,
+}
+
+const MentorRouteWithChildren =
+  MentorRoute._addFileChildren(MentorRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  BolsasRoute: BolsasRoute,
+  AdminRoute: AdminRouteWithChildren,
+  ClienteRoute: ClienteRouteWithChildren,
   LoginRoute: LoginRoute,
+  MentorRoute: MentorRouteWithChildren,
   MentoriasRoute: MentoriasRoute,
   RegistoRoute: RegistoRoute,
+  TermosRoute: TermosRoute,
+  BolsasIdRoute: BolsasIdRoute,
+  BolsasIndexRoute: BolsasIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -200,7 +200,72 @@ Use o `lucide-react`, com tamanho `h-4 w-4` em botões e campos e `h-3.5 w-3.5` 
 
 O painel lateral do registo usa círculos desfocados em posição absoluta: `bg-primary/5` e `bg-accent/25`, com `aria-hidden`. Listas numeradas usam `font-display text-primary` com números de dois dígitos (`01`, `02`…).
 
-## 6. Acessibilidade
+## 6. Animações (Spell UI)
+
+Os componentes animados vêm da [Spell UI](https://spell.sh). Instalam-se com o CLI do shadcn, pelo URL do registo:
+
+```sh
+npx shadcn@latest add https://spell.sh/r/<componente>.json
+```
+
+O ficheiro fica em `src/components/` e passa a ser código do projecto, que pode ser alterado. A maioria usa a biblioteca `motion`, que o CLI instala sozinho.
+
+> **Regra importante:** as páginas são geradas no servidor. Uma animação que esconde conteúdo até o JavaScript arrancar (como `initial={{ y: "100%" }}` do `motion`) deixa esse conteúdo invisível durante o carregamento, e para sempre se a hidratação falhar. Para animações de entrada **acima da dobra** (o que se vê sem fazer scroll), prefira CSS (`@keyframes` em `src/styles.css`). Use `motion` só para animações que respondem a interacções, depois de a página carregar.
+
+### Slide Up Text
+
+Faz as palavras subirem de baixo, uma a uma. É usado no título da página inicial ([`src/routes/index.tsx`](../src/routes/index.tsx)).
+
+Foi refeito em **CSS puro**. A versão original da Spell UI dependia do `motion` e de um `useEffect`, por isso às vezes demorava a arrancar ou nem chegava a animar. O efeito é o mesmo: 0,5 s por peça, curva `cubic-bezier(0.625, 0.05, 0, 1)` e 0,1 s entre peças. A animação está em `--animate-slide-up` (classe `animate-slide-up`).
+
+```tsx
+import { SlideUpText } from "@/components/slide-up-text";
+
+<h1 className="font-display text-4xl font-semibold leading-tight">
+  <SlideUpText>A sua próxima bolsa de estudo,</SlideUpText>
+  <em className="text-primary">
+    <SlideUpText delay={0.6}>em Angola ou no mundo.</SlideUpText>
+  </em>
+</h1>
+```
+
+- **Dê-lhe só texto.** O componente divide uma string em palavras. Se houver uma parte com outro estilo, como o `<em>` vermelho, use um `SlideUpText` para cada parte.
+- **Encadear partes:** para a segunda parte começar quando a primeira acaba, use `delay` = número de palavras da primeira × `stagger` (0,1 s por defeito).
+- **Quebra de linha:** cada `SlideUpText` é um bloco (`flex`), por isso a parte seguinte começa numa linha nova.
+- **Opções:**
+  - `split`: `"words"` (por defeito) ou `"characters"` (letra a letra);
+  - `delay`: atraso inicial, em segundos;
+  - `stagger`: tempo entre peças (0,1 s por defeito);
+  - `duration`: duração de cada peça (0,5 s por defeito);
+  - `from`: de onde parte a onda, `"first"`, `"last"` ou `"center"`;
+  - `className` (no bloco) e `wordClass` (em cada palavra).
+- **Deixaram de existir** (dependiam do `motion`): `inView`, `onStart`, `onComplete`, `transition`, `autoStart`, `ref` e `split="lines"`.
+- **Quando corre:** a animação corre quando o elemento aparece no HTML. Corre ao abrir a página e sempre que se volta a ela. Hidratar não a reinicia.
+- **Acessibilidade:** o texto inteiro está num `sr-only` para os leitores de ecrã. Com "reduzir movimento" activado no sistema, o texto aparece logo, sem animação (`motion-reduce:animate-none`).
+
+## 7. Dashboards (áreas privadas)
+
+As áreas `/admin`, `/mentor` e `/cliente` usam o mesmo layout, [`PainelLayout`](../src/components/painel/PainelLayout.tsx): a sidebar do shadcn com o menu do perfil, o item activo destacado e "Terminar sessão" no rodapé. No telemóvel, a sidebar abre como gaveta. As cores `--sidebar-*` seguem a paleta do projecto.
+
+Peças reutilizáveis, em [`src/components/painel/elementos.tsx`](../src/components/painel/elementos.tsx):
+
+- `CabecalhoPagina` (título, descrição e acções) e `Cartao`, com `rounded-2xl`, borda e `bg-card`.
+- `Indicador` para números (`font-display text-3xl`), sempre calculados dos dados guardados.
+- `EstadoVazio` quando não há registos.
+- `Filtros` (botões de filtro) e as etiquetas `EtiquetaTipo`, `EtiquetaMentoria` e `EtiquetaPagamento`, com cores em [`src/lib/catalogo.ts`](../src/lib/catalogo.ts).
+- `Confirmar` (`AlertDialog`) antes de acções importantes, como validar pagamentos ou repor dados.
+- `ListaDados` para pares termo/valor.
+
+Formulários:
+
+- Criar e editar abrem num `Dialog` (`rounded-2xl`, `max-h-[90vh] overflow-y-auto`).
+- Use `Input`, `NativeSelect` (o `<select>` com o mesmo aspecto do `Input`), `SeletorAreas` e `CampoFoto` (em `src/components/formulario/`).
+- Valide com os esquemas `zod` de [`src/lib/validacao.ts`](../src/lib/validacao.ts) e mostre os erros por baixo do campo com `MensagemErro` e `propsErro` (`aria-invalid` e `aria-describedby`).
+- Notificações de sucesso e erro com `toast` (sonner).
+
+Tabelas: `Table` do shadcn dentro de `rounded-2xl border bg-card`. No telemóvel, esconda colunas secundárias (`hidden md:table-cell`) e mostre esses dados por baixo do nome.
+
+## 8. Acessibilidade
 
 - Todo o elemento clicável deve mostrar o anel de foco ao navegar com o teclado. O `Button` já o tem; nos botões feitos à mão, use `focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`.
 - Imagens: `alt` descritivo. Para elementos decorativos, use `aria-hidden`.

@@ -5,7 +5,7 @@ import { BolsaCard } from "@/components/BolsaCard";
 import { Input } from "@/components/ui/input";
 import { bolsas } from "@/lib/mock";
 
-export const Route = createFileRoute("/bolsas")({
+export const Route = createFileRoute("/bolsas/")({
   head: () => ({
     meta: [
       { title: "Bolsas de estudo — BolsaAngola" },

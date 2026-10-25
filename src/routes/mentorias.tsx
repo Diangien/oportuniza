@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Button } from "@/components/ui/button";
 import { mentorias } from "@/lib/mock";
@@ -29,7 +29,12 @@ function Mentorias() {
               <p className="text-sm text-muted-foreground">{m.duracao}</p>
               <p className="mt-3 flex-1 text-sm">{m.descricao}</p>
               <div className="mt-5 font-display text-3xl font-semibold text-primary">{m.preco}</div>
-              <Button className="mt-4">Reservar</Button>
+              <Button asChild className="mt-4">
+                {/* Abre o pedido já com este plano (pede login se for preciso). */}
+                <Link to="/cliente/mentorias" search={{ plano: m.id }}>
+                  Reservar
+                </Link>
+              </Button>
             </article>
           ))}
         </div>
