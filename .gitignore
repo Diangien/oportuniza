@@ -23,7 +23,6 @@ dist-ssr
 docs
 plano.md
 
-
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
